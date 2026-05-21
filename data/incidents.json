@@ -1,0 +1,13 @@
+[
+    {
+        "id_zapisi": 1,
+        "numb_proicsh": 265,
+        "type_proicsh_name": "ТЯЖКИЙ ВРЕД ЗДОРОВЬЮ",
+        "text_proicsh": "Здесь должна быть ваша реклама",
+        "data_proicsh": "2026-04-08",
+        "garnizon": "6",
+        "garnizon_name": "Тирасполь",
+        "glavn": 0,
+        "is_editable": true
+    }
+]

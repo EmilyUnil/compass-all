@@ -1,0 +1,857 @@
+.container { 
+    padding-bottom: 30px;
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    position: relative;
+    height: 60px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    color: #4682B4;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.table_1 { 
+    margin-bottom: 20px; 
+}
+
+.table_1 button, .table_1 .dropdown button, .date-selector button {
+    width: 180px; 
+    height: 50px;
+    background-color: #4682B4; 
+    color: #fff; 
+    border: 1px solid #4682B4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px; 
+    text-overflow: ellipsis; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    vertical-align: middle;
+}
+
+.table_1 button:hover, .table_1 .dropdown button:hover, .date-selector button:hover {
+    background-color: #fff; 
+    color: #4682B4; 
+    border-color: #4682B4;
+}
+
+.dropdown-menu.show {
+    width: 180px;
+}
+
+.date-selector { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    margin: 15px auto; 
+    margin-bottom: 30px; 
+    transition: transform 0.3s ease;
+}
+
+.container .date-selector input { 
+    padding: 10px; 
+    border: 1px solid #4682B4; 
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center; 
+    width: 35%; 
+    min-width: 300px; 
+    height: 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.date-selector button {
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.date-selector .dropdown button#garnizon-dropdown {
+    background-color: #4682B4;
+    color: #fff;
+    border: 1px solid #4682B4;
+}
+
+.table_1 .dropdown button { 
+    margin-right: 10px; 
+}
+
+.daterangepicker .applyBtn { 
+    background-color: #4682B4; 
+    color: white; 
+    border: none;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.table-column {
+    width: 100%;
+}
+
+.table-column table {
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-column tr {
+    height: 50px;
+}
+
+.table-column th, .table-column td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    font-size: 18px;
+    font-weight: 400;
+    vertical-align: middle;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.table-column th {
+    font-weight: 600;
+}
+
+.table-column td:first-child {
+    width: 50px;
+}
+
+.table-column td:nth-child(2) {
+    width: 350px;
+}
+
+.field-center {
+    text-align: center;
+}
+
+.field-center input[readonly], .field-center.readonly {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+#data-table-pole2, #data-table-pole1 {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#data-table-pole2.fade-in, #data-table-pole1.fade-in {
+    opacity: 1;
+    display: table;
+}
+
+.save-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.save-button-container button {
+    width: 180px;
+    height: 50px;
+    background-color: #4682B4;
+    color: #fff;
+    border: 1px solid #4682B4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.save-button-container button:hover {
+    background-color: #fff;
+    color: #4682B4;
+    border: 1px solid #4682B4;
+}
+
+.calendar-underline {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 50%;
+    height: 2px;
+    transform: translateX(-50%);
+}
+
+.results-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 50px;
+}
+
+.results-cell .naimenov {
+    text-align: left;
+    flex-grow: 1;
+}
+
+.input-container {
+    text-align: right;
+    display: inline-block;
+}
+
+.input-container input, .input-container span {
+    width: 120px;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 8px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.input-container span.readonly, .input-container input[readonly] {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: not-allowed;
+}
+
+.drp-calendar {
+    position: relative;
+}
+
+.drp-calendar table {
+    width: 100%;
+}
+
+.additional-section {
+    margin: 30px auto;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    min-height: 200px; 
+    background-color: #ebf0f5; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+.additional-section .header {
+    font-size: 36px;
+    font-weight: 600;
+    color: #4682B4;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.additional-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.additional-input-container span.readonly,
+.additional-input-container input[readonly],
+.additional-input-container input#number-input {
+    width: 200px; 
+    height: 54px;
+    line-height: 54px;
+    padding: 0 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #4682B4;
+    background-color: #fff; 
+}
+
+.additional-input-container .dropdown button {
+    width: 200px; 
+    height: 54px;
+    line-height: 54px;
+    padding: 0 10px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #4682B4;
+    background-color: #fff; 
+    color: #6c757d; 
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.additional-input-container .dropdown button:hover {
+    background-color: #e9ecef;
+    color: #4682B4;
+}
+
+.additional-input-container span.readonly,
+.additional-input-container input[readonly] {
+    color: #000000; 
+}
+
+.additional-input-container input#number-input {
+    color: #6c757d; 
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.additional-input-container .dropdown button#type_proicsh_btn {
+    justify-content: center; 
+    align-items: center;
+}
+
+#exampleFormControlTextarea1 {
+    width: 845px;
+    height: 200px;
+    border: 1px solid #4682B4;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 400;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#additional-save-button {
+    width: 180px;
+    height: 50px;
+    background-color: #4682B4;
+    color: #fff;
+    border: 1px solid #4682B4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: none; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#additional-save-button:hover {
+    background-color: #fff;
+    color: #4682B4;
+    border: 1px solid #4682B4;
+}
+
+#type_proicsh_menu {
+    width: auto;
+    min-width: 200px;
+    max-height: 210px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4682B4 #ebf0f5;
+}
+
+#type_proicsh_menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+#type_proicsh_menu::-webkit-scrollbar-track {
+    background: #ebf0f5;
+    border-radius: 4px;
+}
+
+#type_proicsh_menu::-webkit-scrollbar-thumb {
+    background: #4682B4;
+    border-radius: 4px;
+}
+
+#type_proicsh_menu::-webkit-scrollbar-thumb:hover {
+    background: #2f5a8a;
+}
+
+#type_proicsh_menu .dropdown-item {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#type_proicsh_btn {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    border: 3px solid #4682B4;
+}
+
+.card:active {
+    transform: scale(1);
+    border: 2px solid #0056b3;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.3;
+    cursor: pointer;	
+}
+
+.card-text-wrapper {
+    overflow: hidden;
+    flex-grow: 1;
+    position: relative;
+}
+
+.edit-form {
+    position: relative;
+    width: 100%;
+}
+
+.edit-textarea {
+    resize: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px;
+    font-size: 1rem;
+    line-height: 1.5;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.edit-buttons {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.card.editing .card-text-wrapper {
+    max-height: none;
+    overflow: visible;
+}
+
+.card.editing .edit-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+.card.editing .edit-form {
+    margin: 0;
+    padding: 0;
+}
+
+.card-text {
+    margin-top: 5px;
+    font-size: 1rem;
+    color: #333;
+    white-space: pre-wrap;
+    cursor: pointer;
+    text-indent: 40px;
+}
+
+.card:not(.collapsed) .card-text-wrapper {
+    max-height: 100%;
+}
+
+.card:not(.collapsed) .card-text {
+    width: 100%;
+}
+
+.card.collapsed .card-text-wrapper {
+    max-height: 2.8em;
+    overflow: hidden;
+}
+
+.card.collapsed .card-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    white-space: normal;
+}
+
+.card-text.lines-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-text.lines-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-label {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.no-incidents {
+    padding: 10px;
+    color: #666;
+    text-align: center;
+}
+
+#incident-cards {
+    margin-top: 20px;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    width: auto;
+    margin-right: 0.5rem; 
+    margin-left: 0px;
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+    margin-left: 0.7em;
+}
+
+.form-check-input.glavn-checkbox {
+    right: 0.5rem;
+}
+
+.form-check-input {
+    font-size: 1.5rem;
+}
+
+.edit-form-btn {
+    background: none;
+    cursor: pointer;
+    width: 1.5em;
+    height: 1.5em;
+    padding-left: 1rem;
+}
+
+.edit-form-btn:hover {
+    color: #D2691E;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.button-group .btn {
+    width: 180px;
+    height: 50px;
+    background-color: #78858B;
+    color: #fff;
+    border: 1px solid #78858B;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: none; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.button-group .btn:hover {		   
+    background-color: #fff;
+    color: #78858B;
+    border: 1px solid #78858B;
+}
+
+.expand-btn {
+    font-size: 1.5rem; 
+    color: #333;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 1.5em;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.expand-btn:hover {
+    color: #D2691E;
+}
+
+.expand-btn::before {
+    content: '▼';
+}
+
+.card.expanded .expand-btn::before {
+    content: '▲';
+}
+
+.card-text {
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.card:not(.expanded) .card-text {
+    -webkit-line-clamp: 6;
+}
+
+@media (min-width: 750px) and (max-width: 1100px) {
+
+}
+@media (min-width: 740px) and (max-width: 950px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .table-container {
+        flex-direction: row; 
+        gap: 10px; 
+        overflow-x: auto; 
+        justify-content: flex-start;
+    }
+
+    .table-column {
+        flex: 0 0 calc(50% - 5px); 
+        max-width: calc(50% - 5px);
+        overflow: hidden; 
+    }
+
+    .table-column table {
+        width: 100%;
+        min-width: 0; 
+    }
+
+    .table-column td:first-child {
+        min-width: 30px; 
+    }
+
+    .table-column td:nth-child(2) {
+        max-width: 150px; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .results-cell .naimenov {
+        max-width: 120px; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .input-container input,
+    .input-container span {
+        width: 80px; 
+
+    }
+
+    .date-selector {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        max-width: 100%;
+    }
+
+    .date-selector > * {
+        flex: 0 0 calc(50% - 5px);
+    }
+
+    .date-selector > input#date-range {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: 50px;
+    }
+
+    .date-selector #back-button,
+    .date-selector #show-button,
+    .date-selector #ai-button,
+    .date-selector .dropdown button#garnizon-dropdown {
+        width: 100%;
+        height: 50px;
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+        border-radius: 8px;
+    }
+
+    .date-selector .dropdown {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        flex: 0 0 calc(50% - 5px);
+        margin: 0;
+    }
+}
+
+@media (max-width: 740px) {
+.container {
+        padding-left: 10px;
+        padding-right: 10px; 
+    }
+
+    .table-container {
+        flex-direction: column;
+        gap: 20px;
+        margin-left: 0; 
+        margin-right: 0;
+        margin-top: 15px;
+    }
+
+    .table-column {
+        width: 100%;
+        overflow-x: auto; 
+    }
+
+    .table-column table {
+        min-width: 0; 
+        width: 100%;
+    }
+
+    .table-column td:first-child {
+        width: auto; 
+        min-width: 0px; 
+    }
+
+    .table-column td:nth-child(2) {
+        width: auto; 
+        max-width: 200px; 
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+    }
+
+    .results-cell .naimenov {
+        max-width: 400px; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .input-container input,
+    .input-container span {
+        width: 100px; 
+        height: 40px;
+    }
+}
+
+@media (max-width: 740px) {
+  .date-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: auto;
+    margin: 10px auto;
+  }
+
+  .date-selector > * {
+    flex: 0 0 calc(50% - 5px); 
+    box-sizing: border-box;
+  }
+
+  .date-selector > input#date-range {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: 50px;
+    font-size: 18px;
+  }
+
+  .date-selector #back-button,
+  .date-selector #show-button,
+  .date-selector #ai-button,
+  .date-selector .dropdown button#garnizon-dropdown {
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .date-selector .dropdown {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    flex: 0 0 calc(50% - 5px);
+    margin: 0; 
+  }
+}

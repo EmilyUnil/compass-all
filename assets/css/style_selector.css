@@ -1,0 +1,653 @@
+.table_1 { 
+    margin-bottom: 20px; 
+}
+
+.table_1 button, .table_1 .dropdown button, .date-selector button {
+    width: 180px; 
+    height: 46px;
+    background-color: #4682B4; 
+    color: #fff; 
+    border: 1px solid #4682B4;
+    font-size: 18px;
+    font-weight: 600;
+    text-overflow: ellipsis; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    vertical-align: middle;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.date-selector #ai-button, .date-selector #geo-button {
+    width: 85px;
+    font-size: 18px;
+}
+
+.calendar-underline {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 50%;
+    height: 2px;
+    transform: translateX(-50%);
+}
+
+.date-selector #back-button,
+.date-selector #show-button,
+.date-selector #ai-button,
+.date-selector #geo-button,
+.date-selector .dropdown button#garnizon-dropdown {
+    display: block !important; 
+    visibility: visible !important;
+}
+
+.table_1 button:hover, .table_1 .dropdown button:hover, .date-selector button:hover {
+    background-color: #fff; 
+    color: #4682B4; 
+    border-color: #4682B4;
+}
+
+.dropdown-menu.show {
+    width: 180px;
+}
+
+.date-selector { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    margin: 15px auto; 
+    margin-bottom: 30px; 
+    transition: transform 0.3s ease;
+}
+
+.container .date-selector input { 
+    padding: 10px; 
+    border: 1px solid #4682B4; 
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center; 
+    width: 35%; 
+    min-width: 300px; 
+    height: 46px;
+    cursor: pointer;
+    border-radius: 8px;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.date-selector .dropdown button#garnizon-dropdown {
+    background-color: #4682B4;
+    color: #fff;
+    border: 1px solid #4682B4;
+}
+
+.table_1 .dropdown button { 
+    margin-right: 10px; 
+}
+
+.daterangepicker .applyBtn { 
+    background-color: #4682B4; 
+    color: white; 
+    border: none;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.table-column {
+    width: 100%;
+}
+
+.table-column table {
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+#data-table th, #data-table td {
+    text-align: center;
+    border: 1px solid #dee2e6;
+    font-size: 18px;
+    font-weight: 400;
+    vertical-align: middle;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+#data-table td:nth-child(2) {
+    text-align: left;
+}
+
+#data-table th {
+    font-weight: 600;
+}
+
+#data-table td input {
+    text-align: center; 
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 18px;
+	    height: 40px;
+}
+
+.table-column td:first-child {
+    width: 50px;
+    text-align: center;
+}
+
+.table-column td:nth-child(2) {
+    width: 350px;
+    text-align: left;
+}
+
+.field-center {
+    text-align: center;
+}
+
+.field-center input[disabled], .field-center.disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+#data-table {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease; 
+}
+
+#data-table.fade-in {
+    opacity: 1;
+    display: table; 
+}
+
+#data-table.centered {
+    max-width: 100%;
+}
+
+.field-tiraspol, .field-orovd {
+    display: none;
+}
+
+.save-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.save-button-container button {
+    width: 180px;
+    height: 50px;
+    background-color: #4682B4;
+    color: #fff;
+    border: 1px solid #4682B4;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.save-button-container button:hover {
+    background-color: #fff;
+    color: #4682B4;
+    border: 1px solid #4682B4;
+}
+
+.disabled {
+    background-color: #f8f9fa !important;
+    border-radius: 8px;
+    cursor: not-allowed;
+}
+
+.naimenov a {
+    color: #000000 !important;
+    text-decoration: none;
+}
+
+.naimenov a:hover {
+    text-decoration: underline;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#results-table-body tr {
+    height: 60px;
+    text-align: left;
+}
+.calendar-underline {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 50%;
+    height: 2px;
+    transform: translateX(-50%);
+}
+#back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 40px;
+    height: 40px;
+    background-color: #4682B4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: opacity 0.3s, transform 0.3s;
+}
+#back-to-top:hover {
+    background-color: #355f8d;
+    transform: scale(1.1);
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 180px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 16px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+/* Стили для подменю МВД */
+.dropdown-submenu {
+    position: relative;
+}
+.dropdown-submenu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+.dropdown-submenu-items .dropdown-item {
+    padding-left: 30px;
+    font-size: 14px;
+    color: #666;
+}
+.dropdown-submenu-items .dropdown-item:hover {
+    background-color: #e9ecef;
+}
+.mvd-item {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+    font-size: 10px;
+}
+.dropdown-submenu.active .dropdown-arrow {
+    transform: rotate(90deg);
+}
+.dropdown-submenu.active .dropdown-submenu-items {
+    display: block !important;
+}
+/* Стили для новой стрелки */
+.arrow-4 {
+    position: relative;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+.arrow-4-left {
+    position: absolute;
+    background-color: transparent;
+    top: 8px;
+    left: 0;
+    width: 12px;
+    height: 3px;
+    display: block;
+    transform: rotate(35deg);
+    float: right;
+    border-radius: 2px;
+}
+.arrow-4-left:after {
+    content: "";
+    background-color: #337AB7;
+    width: 12px;
+    height: 3px;
+    display: block;
+    float: right;
+    border-radius: 6px 10px 10px 6px;
+    transition: all 0.3s cubic-bezier(0.25, 1.7, 0.35, 0.8);
+    z-index: -1;
+}
+.arrow-4-right {
+    position: absolute;
+    background-color: transparent;
+    top: 8px;
+    left: 8px;
+    width: 12px;
+    height: 3px;
+    display: block;
+    transform: rotate(-35deg);
+    float: right;
+    border-radius: 2px;
+}
+.arrow-4-right:after {
+    content: "";
+    background-color: #337AB7;
+    width: 12px;
+    height: 3px;
+    display: block;
+    float: right;
+    border-radius: 10px 6px 6px 10px;
+    transition: all 0.3s cubic-bezier(0.25, 1.7, 0.35, 0.8);
+    z-index: -1;
+}
+.dropdown-submenu.active .arrow-4-left:after {
+    transform-origin: center center;
+    transform: rotate(-70deg);
+}
+.dropdown-submenu.active .arrow-4-right:after {
+    transform-origin: center center;
+    transform: rotate(70deg);
+}
+.dropdown-submenu.active .arrow-4-left:after,
+.dropdown-submenu.active .arrow-4-right:after {
+    background-color: #23527c !important;
+}
+/* Адаптация для пункта МВД */
+.mvd-item {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 15px !important;
+}
+.mvd-text {
+    flex: 1;
+}
+#data-table th[rowspan="2"] {
+text-overflow: ellipsis;
+overflow: hidden;
+max-width: 100px;
+}
+/* Стили для таблицы МВД */
+.mvd-table-mode {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.mvd-table-mode th,
+.mvd-table-mode td {
+    border: 1px solid #dee2e6;
+    padding: 4px 2px !important;
+    text-align: center;
+    font-size: 12px;
+    background-color: transparent !important;
+}
+.mvd-table-mode th {
+    background-color: #f8f9fa !important;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.mvd-table-mode .field-6-center input,
+.mvd-table-mode .field-6-orovd input,
+.mvd-table-mode .field-6-total input,
+.mvd-table-mode .field-5 input,
+.mvd-table-mode .field-31 input,
+.mvd-table-mode .field-10 input,
+.mvd-table-mode .field-13 input,
+.mvd-table-mode .field-29 input,
+.mvd-table-mode .field-17 input,
+.mvd-table-mode .field-88 input {
+    border: none !important;
+    background: transparent !important;
+    width: 100% !important;
+    text-align: center;
+    font-size: 12px;
+    padding: 2px !important;
+    box-shadow: none !important;
+}
+.mvd-table-mode input:disabled {
+    background-color: #f8f9fa !important;
+    opacity: 1 !important;
+    color: #333 !important;
+}
+/* Убираем границы у input в режиме таблицы */
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+#data-table {
+    table-layout: fixed;
+}
+
+.field-orovd {
+    display: table-cell !important;
+    width: 15% !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    position: static !important;
+    background-color: transparent !important;
+    z-index: auto !important;
+}
+/* Стили для disabled состояния - предотвращаем затемнение */
+.field-orovd input:disabled {
+    background-color: #f8f9fa !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+    border-color: #dee2e6 !important;
+}
+/* Стили для enabled состояния */
+.field-orovd input:not(:disabled) {
+    background-color: #fff !important;
+    border: 1px solid #ced4da !important;
+    opacity: 1 !important;
+    color: #000 !important;
+}
+/* Скрытие столбцов когда не нужно */
+.hidden-column {
+    display: none !important;
+}
+
+@media (min-width: 650px) and (max-width: 750px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .table-container {
+        flex-direction: row; 
+        gap: 10px; 
+        overflow-x: auto; 
+        justify-content: flex-start;
+    }
+
+    .table-column {
+        flex: 0 0 calc(50% - 5px); 
+        max-width: calc(50% - 5px);
+        overflow: hidden; 
+    }
+
+    .table-column table {
+        width: 100%;
+        min-width: 0; 
+    }
+
+    .table-column td:first-child {
+        min-width: 30px; 
+    }
+
+    .table-column td:nth-child(2) {
+        max-width: 150px; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .date-selector {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        max-width: 100%;
+    }
+
+    .date-selector > * {
+        flex: 0 0 calc(50% - 5px);
+    }
+
+    .date-selector > input#date-range {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-width: 0;
+        height: 46px;
+    }
+
+    .date-selector #back-button,
+    .date-selector #show-button,
+    .date-selector #ai-button,
+    .date-selector #geo-button,
+    .date-selector .dropdown button#garnizon-dropdown {
+        width: 100%;
+        height: 46px;
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .date-selector .dropdown {
+        display: flex;
+        align-items: center;
+        height: 46px;
+        flex: 0 0 calc(50% - 5px);
+        margin: 0;
+    }
+}
+
+@media (max-width: 650px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px; 
+    }
+
+    .table-container {
+        flex-direction: column;
+        gap: 20px;
+        margin-left: 0; 
+        margin-right: 0;
+        margin-top: 15px;
+    }
+
+    .table-column {
+        width: 100%;
+        overflow-x: auto; 
+    }
+
+    .table-column table {
+        min-width: 0; 
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .table-column td:first-child {
+        width: auto; 
+        min-width: 0px; 
+    }
+
+    .table-column td:nth-child(2) {
+        width: auto; 
+        max-width: 200px; 
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis; 
+    }
+
+    .date-selector {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        max-width: auto;
+        margin: 10px auto;
+    }
+
+    .date-selector > * {
+        flex: 0 0 calc(50% - 5px); 
+        box-sizing: border-box;
+    }
+
+    .date-selector > input#date-range {
+        flex: 0 0 100%;
+        max-width: 100%;
+        height: 46px;
+        font-size: 16px;
+    }
+
+    .date-selector #back-button,
+    .date-selector #show-button,
+    .date-selector #ai-button,
+    .date-selector #geo-button,
+    .date-selector .dropdown button#garnizon-dropdown {
+        height: 46px;
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    .date-selector .dropdown {
+        display: flex;
+        align-items: center;
+        height: 46px;
+        flex: 0 0 calc(50% - 5px);
+        margin: 0; 
+    }
+}

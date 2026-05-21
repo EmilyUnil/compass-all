@@ -1,0 +1,15 @@
+[
+    {"id": 1,  "number_naim": "1",   "naimenov": "Поступило заявлений и сообщений",             "pole": 1},
+    {"id": 2,  "number_naim": "2",   "naimenov": "Зарегистрировано преступлений",                "pole": 2},
+    {"id": 3,  "number_naim": "2.1", "naimenov": "Тяжкие и особо тяжкие",                        "pole": 2},
+    {"id": 4,  "number_naim": "2.3", "naimenov": "Убийства (в т.ч. покушения)",                  "pole": 2},
+    {"id": 5,  "number_naim": "2.4", "naimenov": "Умышленное причинение тяжкого вреда здоровью", "pole": 2},
+    {"id": 6,  "number_naim": "2.5", "naimenov": "Изнасилования (в т.ч. покушения)",             "pole": 2},
+    {"id": 7,  "number_naim": "2.6", "naimenov": "Кражи",                                         "pole": 2},
+    {"id": 8,  "number_naim": "2.7", "naimenov": "Грабежи",                                       "pole": 2},
+    {"id": 9,  "number_naim": "3",   "naimenov": "Раскрыто преступлений",                         "pole": 1},
+    {"id": 10, "number_naim": "4",   "naimenov": "Нераскрытые преступления",                      "pole": 1},
+    {"id": 11, "number_naim": "5",   "naimenov": "Задержано подозреваемых лиц",                   "pole": 1},
+    {"id": 12, "number_naim": "6",   "naimenov": "Изъято единиц оружия",                          "pole": 1},
+    {"id": 13, "number_naim": "7",   "naimenov": "Административные правонарушения",               "pole": 1}
+]
