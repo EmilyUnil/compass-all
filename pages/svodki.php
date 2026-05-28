@@ -166,6 +166,8 @@ background-color: #fff;
 .split-separator {
     font-weight: 700;
 }
+.drp-calendar.right { display:none !important; }
+.daterangepicker { min-width:auto !important; }
     </style>
 </head>
 <body>
@@ -681,13 +683,13 @@ function checkFormCompletion() {
 }
 async function updateGlavnStatus(numb, glavn) {
     try {
-        const response = await fetch('../api/stub.php', {
+        const response = await fetch('../api/output_incidents.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ numb, glavn })
+            body: JSON.stringify({ numb, glavn, garnizon: selectedGarnisonIndex })
         });
         const data = await response.json();
-        if (!data.success) throw new Error(data.message);
+        if (!data.success) throw new Error(data.message || data.error || 'error');
         const $card = $(`.card[data-numb="${numb}"]`);
         $card.data('glavn', glavn).attr('data-glavn', glavn);
     } catch (err) {
@@ -759,7 +761,7 @@ async function loadIncidentCards(startDate, endDate) {
         const showAll = selectedGarnisonIndex === '88' ? $('#show-all-toggle').is(':checked') : false;
         let allIncidents = [];
         if (selectedGarnisonIndex === '88' && accessResponse.all_garrisons_plus_88) {
-            // Специальный случай для гарнизона 88: только glavn=1 от всех гарнизонов
+            // Гарнизон 88: при выключенном переключателе — только glavn=1, иначе все
             const response = await fetch('../api/output_incidents.php', {
                 method: 'POST',
                 headers: {
@@ -769,7 +771,8 @@ async function loadIncidentCards(startDate, endDate) {
                 body: JSON.stringify({
                     start_date: startDate.format('YYYY-MM-DD'),
                     end_date: endDate.format('YYYY-MM-DD'),
-                    garnizon: '88'
+                    garnizon: '88',
+                    glavn_only: !showAll
                 })
             });
             const data = await response.json();

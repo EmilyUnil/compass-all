@@ -75,6 +75,8 @@ $default_selections   = ['1','2'];
     #garnizon-dropdown { text-transform:uppercase; }
     @media screen and (max-width:1200px) { .date-selector { flex-direction:column; } .card-wrapper { flex:0 0 40%; max-width:40%; } }
     @media screen and (max-width:770px) { .card-wrapper { flex:0 0 100%; max-width:100%; } }
+    .drp-calendar.right { display:none !important; }
+    .daterangepicker { min-width:auto !important; }
     </style>
     <script>
     // ── Единое состояние ────────────────────────────────────────────────────────
@@ -185,6 +187,8 @@ $default_selections   = ['1','2'];
                 $card.addClass('expanded'); $(this).addClass('expanded');
                 $card.find('.svodki-list-container').addClass('show');
                 $card.find('.card-actions').addClass('show');
+                tempSelections[cardId] = [...(cardSelections[cardId] || <?php echo json_encode($default_selections); ?>)];
+                loadSvodkiList().then(sl => { populateSvodkiList(cardId, $card.find('.svodki-list-container'), sl); });
             }
         });
 
@@ -305,26 +309,31 @@ $default_selections   = ['1','2'];
             if (data.success && data.data) tableData = data.data;
         } catch(e) { console.error('updateCardDetails fetch error:', e); }
 
-        // Агрегируем
+        // Агрегируем по number_naim — svodki_select и text_selector используют одинаковые number_naim
         const agg = {};
         tableData.forEach(item => {
-            const k = item.id_svodki;
+            const k = String(item.number_naim);
             if (!agg[k]) agg[k] = { ...item, kolichestvo:0, neraskr:0, raskr:0 };
             agg[k].kolichestvo += parseInt(item.kolichestvo)||0;
             agg[k].neraskr     += parseInt(item.neraskr)||0;
             agg[k].raskr       += parseInt(item.raskr)||0;
         });
 
-        // Берём до 3 выбранных пунктов
+        // Берём до 3 выбранных пунктов; поиск данных по number_naim (не по id_svodki)
         const displayItems = selectedIds.slice(0,3).map(id => {
-            const sv = svodkiList.find(x => x.id_svodki === id) || {naimenov:'-', pole:1};
-            const d  = agg[id] || {kolichestvo:0, neraskr:0, raskr:0};
-            return { id_svodki:id, naimenov:sv.naimenov, pole:sv.pole, ...d };
+            const sv = svodkiList.find(x => x.id_svodki === id) || {naimenov:'-', pole:1, number_naim:''};
+            const d  = agg[String(sv.number_naim)];
+            if (d) return { id_svodki:id, naimenov:sv.naimenov, pole:d.pole||sv.pole, number_naim:sv.number_naim, kolichestvo:d.kolichestvo, neraskr:d.neraskr, raskr:d.raskr };
+            return { id_svodki:id, naimenov:sv.naimenov, pole:sv.pole, number_naim:sv.number_naim, kolichestvo:0, neraskr:0, raskr:0 };
         });
-        while (displayItems.length < 3) displayItems.push({id_svodki:null, naimenov:'-', pole:1, kolichestvo:0, neraskr:0, raskr:0});
+        while (displayItems.length < 3) displayItems.push({id_svodki:null, naimenov:'-', pole:1, number_naim:'', kolichestvo:0, neraskr:0, raskr:0});
 
-        const hasCrimes = selectedIds.includes('1');
-        const crimesItem = agg['1'] || {kolichestvo:0, neraskr:0, raskr:0};
+        // hasCrimes: выбран пункт "Зарегистрировано преступлений" (number_naim='2')
+        const hasCrimes = selectedIds.some(id => {
+            const sv = svodkiList.find(x => x.id_svodki === id);
+            return sv && String(sv.number_naim) === '2';
+        });
+        const crimesItem = agg['2'] || {kolichestvo:0, neraskr:0, raskr:0};
 
         $card.find('.details').each(function(index) {
             let label, value, color;
@@ -333,9 +342,9 @@ $default_selections   = ['1','2'];
                 label = 'НЕ РАСКРЫТЫ';
                 value = (crimesItem.neraskr||0) - (crimesItem.raskr||0);
                 color = value > 0 ? 'red' : 'green';
-            } else if (index === 2 && selectedIds.includes('2')) {
+            } else if (index === 2 && hasCrimes) {
                 label = '% РАСКРЫВАЕМОСТИ';
-                const total = crimesItem.kolichestvo || crimesItem.neraskr || 0;
+                const total = crimesItem.neraskr || 0;
                 value = total > 0 ? ((crimesItem.raskr/total)*100).toFixed(2) : '0.00';
                 color = parseFloat(value) > 0 ? 'green' : 'red';
             } else {

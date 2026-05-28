@@ -51,6 +51,8 @@ $initialGarnisonText = $garnizonNames[$garnizon] ?? 'ГАРНИЗОН';
         .selection-wrap { margin-top:20px; padding:16px; }
         .selection-item { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
         .swatch { width:14px; height:14px; border-radius:50%; display:inline-block; }
+        .drp-calendar.right { display:none !important; }
+        .daterangepicker { min-width:auto !important; }
     </style>
 </head>
 <body>

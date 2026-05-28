@@ -100,6 +100,8 @@ $initialSubMode = '';
     .daterangepicker {
         z-index: 10000 !important;
     }
+    .drp-calendar.right { display:none !important; }
+    .daterangepicker { min-width:auto !important; }
     #instruction-btn {
         position: fixed;
         bottom: 20px;

@@ -59,14 +59,22 @@ if (empty($action) || $action === 'view' || (!empty($startDate) && empty($input[
     }
 
     $mvdGarnizons = ['6','5','31','10','13','29','17'];
+    $glavnOnly = !empty($input['glavn_only']);
 
-    $filtered = array_filter($incidents, function ($inc) use ($garnizon, $startSql, $endSql, $mvdGarnizons) {
+    $filtered = array_filter($incidents, function ($inc) use ($garnizon, $startSql, $endSql, $mvdGarnizons, $glavnOnly) {
         $d = $inc['data_proicsh'] ?? '';
         if ($garnizon === '88') {
-            return in_array((string)($inc['garnizon'] ?? ''), $mvdGarnizons) && $d >= $startSql && $d <= $endSql;
+            $match = in_array((string)($inc['garnizon'] ?? ''), $mvdGarnizons) && $d >= $startSql && $d <= $endSql;
+            return $match && (!$glavnOnly || ($inc['glavn'] ?? 0) == 1);
         }
         return (string)($inc['garnizon'] ?? '') === $garnizon && $d >= $startSql && $d <= $endSql;
     });
+
+    // Для гарнизона 88: важные карточки (glavn=1) идут первыми
+    $filtered = array_values($filtered);
+    if ($garnizon === '88') {
+        usort($filtered, fn($a, $b) => ($b['glavn'] ?? 0) <=> ($a['glavn'] ?? 0));
+    }
 
     echo json_encode([
         'success'   => true,

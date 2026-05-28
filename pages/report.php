@@ -79,6 +79,8 @@ $initialGarnizonName = $garnizonNames[$garnizon] ?? 'МВД';
     .calendar-underline{position:absolute;bottom:2px;left:50%;width:50%;height:2px;transform:translateX(-50%);}
     @media(max-width:1200px){.filter-content-wrapper{flex-direction:column;}.sidebar{width:100%;position:static;}}
     @media(max-width:650px){.date-selector{flex-wrap:wrap;} #date-range{min-width:100%;}}
+    .drp-calendar.right { display:none !important; }
+    .daterangepicker { min-width:auto !important; }
     </style>
 </head>
 <body>
