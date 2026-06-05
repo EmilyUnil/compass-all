@@ -406,6 +406,13 @@ $('#back-button').on('click', function() {
         $('#additional-cancel-button').hide();
         logAction('Очистка формы дополнительной информации');
     });
+    // Патч updateCalendars: перерисовываем подсветку периодов при смене месяца
+    const _origUpdateCals = $.fn.daterangepicker.prototype.updateCalendars;
+    $.fn.daterangepicker.prototype.updateCalendars = function() {
+        _origUpdateCals.apply(this, arguments);
+        setTimeout(() => markDatesInCalendar(), 100);
+    };
+
     $('#date-range').on('show.daterangepicker', function(ev, picker) {
         setTimeout(() => {
             $('.drp-calendar tbody td').each(function() {
@@ -1311,14 +1318,14 @@ async function updateTable(data, isEditable) {
                 </span>
                 <div class="input-container">
                     ${isPercentRow
-                        ? `<span class="readonly percent-display">${calculatePercentValue(rowData)}</span>`
+                        ? `<span class="readonly">${rowData ? (parseInt(rowData.neraskr) || 0) : 0}</span>`
                         : (isSplitRow
                             ? (isEditable
                                 ? `<input type="text" class="form-control split-value-input" value="${splitValue}">`
                                 : `<span class="readonly">${splitValue}</span>`)
                             : (isEditable
                                 ? `<input type="text" class="form-control single-value-input" value="${singleValue}">`
-                                : `<span class="readonly">${singleValue || 0}</span>`))}
+                                : `<span class="readonly">${singleValue}</span>`))}
                 </div>
             </div>`;
         return `<tr data-id="${number_naim}"><td>${row.number_naim}</td><td>${resultsContent}</td></tr>`;
@@ -1340,16 +1347,6 @@ async function updateTable(data, isEditable) {
             $(this).val(inputValue.replace(/[^0-9]/g, ''));
         }
         const rowId = String($(this).closest('tr').data('id') || '');
-        if (rowId === '2') {
-            const splitVal = $(this).closest('tr').find('.split-value-input').val() || '';
-            const parts = splitVal.split('/');
-            const percent = calculatePercentValue({
-                neraskr: parts[0] || '0',
-                raskr: parts[1] || '0'
-            });
-            $('#results-table-body-pole2 tr[data-id="2"] .percent-display').text(percent);
-            $('#results-table-body-pole1 tr[data-id="2"] .percent-display').text(percent);
-        }
     });
 
     $(document).off('keydown.svodkiNav').on('keydown.svodkiNav', '#results-table-body-pole2 tr .results-cell input, #results-table-body-pole1 tr .results-cell input', function(e) {

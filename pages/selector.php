@@ -2537,6 +2537,13 @@ $(document).ready(function() {
                 endDate: initialEnd.format('DD.MM.YYYY')
             });
             // Обработчики datepicker
+            // Патч updateCalendars: перерисовываем подсветку при любом обновлении календаря (в т.ч. смена месяца)
+            const _origUpdateCals = $.fn.daterangepicker.prototype.updateCalendars;
+            $.fn.daterangepicker.prototype.updateCalendars = function() {
+                _origUpdateCals.apply(this, arguments);
+                setTimeout(() => applyColorsToCalendar(markedDatesCacheByGarnizon[selectedGarnizonIndex] || []), 0);
+            };
+
             $('#date-range').on('show.daterangepicker showCalendar.daterangepicker', async function() {
                 if (!markedDatesCacheByGarnizon[selectedGarnizonIndex]) {
                     await markDatesInCalendar();

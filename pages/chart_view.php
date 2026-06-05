@@ -77,19 +77,21 @@ function buildBackUrl() {
     return CompassState.buildURL(<?php echo json_encode($backPage); ?>);
 }
 
-function renderSelection(datasets) {
+function renderSelection(datasets, activeNumberNaim) {
     const $selection = $('#selection');
     if (!datasets.length) {
         $selection.html('<div>Нет данных для выбранного периода.</div>');
         return;
     }
-    $selection.html(datasets.map((ds, index) => `
+    $selection.html(datasets.map((ds, index) => {
+        const isActive = !activeNumberNaim || String(ds.number_naim) === String(activeNumberNaim);
+        return `
         <label class="selection-item">
-            <input type="checkbox" class="dataset-toggle" data-index="${index}" checked>
+            <input type="checkbox" class="dataset-toggle" data-index="${index}" ${isActive ? 'checked' : ''}>
             <span class="swatch" style="background:${ds.borderColor}"></span>
             <span>${ds.label}</span>
-        </label>
-    `).join(''));
+        </label>`;
+    }).join(''));
 }
 
 async function loadChart() {
@@ -102,7 +104,7 @@ async function loadChart() {
             garnizon: String(CompassState.get().garnizon || <?php echo json_encode($garnizon); ?>),
             startDate: picker.startDate.format('YYYY-MM-DD'),
             endDate: picker.endDate.format('YYYY-MM-DD'),
-            numberNaim: numberNaim || null
+            numberNaim: null  // всегда грузим все пункты
         })
     });
     const data = await response.json();
@@ -111,14 +113,16 @@ async function loadChart() {
         return;
     }
 
-    renderSelection(data.datasets || []);
+    const datasets = data.datasets || [];
+    renderSelection(datasets, numberNaim);
+
     const ctx = document.getElementById('chart').getContext('2d');
     if (chartInstance) chartInstance.destroy();
     chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: data.labels || [],
-            datasets: data.datasets || []
+            datasets: datasets
         },
         options: {
             responsive: true,
@@ -129,6 +133,15 @@ async function loadChart() {
             }
         }
     });
+
+    // Скрываем все датасеты, кроме выбранного при переходе по ссылке/кнопке
+    if (numberNaim) {
+        datasets.forEach((ds, i) => {
+            const visible = String(ds.number_naim) === String(numberNaim);
+            chartInstance.setDatasetVisibility(i, visible);
+        });
+        chartInstance.update();
+    }
 }
 
 $(document).on('change', '.dataset-toggle', function() {
