@@ -391,7 +391,68 @@ $('#back-button').on('click', function() {
             alert('Нет доступа к ИИ.');
             return;
         }
-        alert('Функционал ИИ в разработке');
+        const picker = $('#date-range').data('daterangepicker');
+        const aiStart = picker ? picker.startDate.format('YYYY-MM-DD') : '';
+        const aiEnd   = picker ? picker.endDate.format('YYYY-MM-DD')   : '';
+        $('#ai-content').addClass('d-none').html('');
+        $('#ai-loading').removeClass('d-none');
+        const aiModal = new bootstrap.Modal(document.getElementById('aiModal'));
+        aiModal.show();
+        try {
+            // Шаг 1: получаем данные и ключ с сервера
+            const resp    = await fetch('../api/ai_analysis.php', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ garnizon: selectedGarnisonIndex ?? '', start_date: aiStart, end_date: aiEnd, source: 'svodki' })
+            });
+            const rawText = await resp.text();
+            let prepData;
+            try { prepData = JSON.parse(rawText); } catch (_) {
+                const e = new Error('Сервер вернул не-JSON ответ (возможно PHP-ошибка)');
+                e._rawText = rawText;
+                throw e;
+            }
+            if (!prepData.success) {
+                $('#ai-loading').addClass('d-none');
+                $('#ai-content').removeClass('d-none').html(`<div class="alert alert-danger">${escapeHtml(prepData.error || 'Ошибка')}</div>`);
+                return;
+            }
+
+            // Шаг 2: вызываем AI API из браузера
+            if (prepData.mode === 'mvd') {
+                // МВД: две вкладки — кратко и подробнее
+                const header = statsHeader(prepData.stats || {});
+                const tabsHtml = `${header}
+                <ul class="nav nav-tabs mb-3" id="aiNavTabs">
+                    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-brief-ai" type="button">Кратко</button></li>
+                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-detail-ai" type="button">Подробнее</button></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="tab-brief-ai"><div class="text-center py-3"><div class="spinner-border spinner-border-sm"></div> Загрузка...</div></div>
+                    <div class="tab-pane" id="tab-detail-ai"><div class="text-center py-3"><div class="spinner-border spinner-border-sm"></div> Загрузка...</div></div>
+                </div>`;
+                $('#ai-loading').addClass('d-none');
+                $('#ai-content').removeClass('d-none').html(tabsHtml);
+
+                // Параллельные запросы к AI
+                const [briefText, detailText] = await Promise.all([
+                    callAiProvider(prepData.provider, prepData.api_key, prepData.prompt_brief),
+                    callAiProvider(prepData.provider, prepData.api_key, prepData.prompt_detailed)
+                ]);
+                $('#tab-brief-ai').html(renderSections(briefText));
+                $('#tab-detail-ai').html(renderGarrisonSections(detailText));
+            } else {
+                // Конкретный гарнизон: один анализ
+                const analysis = await callAiProvider(prepData.provider, prepData.api_key, prepData.prompt);
+                $('#ai-loading').addClass('d-none');
+                $('#ai-content').removeClass('d-none').html(renderAiAnalysis({ analysis, stats: prepData.stats }));
+            }
+        } catch (err) {
+            $('#ai-loading').addClass('d-none');
+            let errMsg = err.message || 'Неизвестная ошибка';
+            if (err._rawText) errMsg += `<br><small style="font-family:monospace;">${escapeHtml(err._rawText.substring(0, 500))}</small>`;
+            $('#ai-content').removeClass('d-none').html(`<div class="alert alert-danger"><strong>Ошибка:</strong> ${errMsg}</div>`);
+        }
         logAction('Нажатие кнопки ИИ');
     });
     $('#additional-cancel-button').on('click', function() {
@@ -747,13 +808,12 @@ function adjustCardTextHeight() {
         function updateReadonlyBanner(isEditable) {
             const rules = CompassState.editRules('svodki');
             const $banner = $('#readonly-banner');
-            if (isEditable) {
+            if (isEditable || rules.reason === 'mvd_sum') {
                 $banner.removeClass('show').text('');
             } else {
                 let msg = '';
-                if (rules.reason === 'mvd_sum')   msg = '⚠ Гарнизон МВД — суммарные данные, редактирование недоступно';
-                else if (rules.reason === 'multi_day') msg = '⚠ Выбрано несколько дней — для суточной сводки доступен только 1 день';
-                else                               msg = '⚠ Режим просмотра — редактирование недоступно';
+                if (rules.reason === 'multi_day') msg = '⚠ Выбрано несколько дней — для суточной сводки доступен только 1 день';
+                else                              msg = '⚠ Режим просмотра — редактирование недоступно';
                 $banner.addClass('show').text(msg);
             }
         }
@@ -1687,7 +1747,117 @@ async function saveData() {
     window.saveData = saveData;
 })();
 
+    function escapeHtml(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Вызов AI-провайдера (Groq или Gemini) из браузера
+    async function callAiProvider(provider, apiKey, prompt) {
+        if (provider === 'groq') {
+            const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], max_tokens: 1400, temperature: 0.3 })
+            });
+            const d = await r.json();
+            if (d.error) throw new Error(d.error.message || 'Groq API error');
+            return d?.choices?.[0]?.message?.content || '';
+        } else {
+            const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 1400, temperature: 0.3 } })
+            });
+            const d = await r.json();
+            if (d.error) throw new Error(d.error.message || 'Gemini API error');
+            return d?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        }
+    }
+
+    // Шапка с метаданными
+    function statsHeader(stats) {
+        return `<div style="background:#2c3e50;color:#ecf0f1;padding:10px 14px;border-radius:4px;margin-bottom:14px;font-size:.9rem;">
+            <strong>Регион:</strong> ${escapeHtml(stats.garnizon || '')} &nbsp;&nbsp;
+            <strong>Период:</strong> ${escapeHtml(stats.period || '')} &nbsp;&nbsp;
+            <strong>Зарег. преступлений:</strong> ${stats.total || 0}
+        </div>`;
+    }
+
+    // Рендер разделов [ЗАГОЛОВОК] → карточки
+    function renderSections(text) {
+        const defs = [
+            { key: 'АНАЛИЗ ОБСТАНОВКИ',         bg: '#1e3d6e' },
+            { key: 'ОСНОВНЫЕ УГРОЗЫ',            bg: '#6b1a24' },
+            { key: 'РЕКОМЕНДАЦИИ',               bg: '#0d4d30' },
+            { key: 'ПРОГНОЗ НА СЛЕДУЮЩИЙ МЕСЯЦ', bg: '#7a4000' },
+        ];
+        let html = '', hasSections = false;
+        for (let i = 0; i < defs.length; i++) {
+            const { key, bg } = defs[i];
+            const tag = `[${key}]`;
+            const si  = text.indexOf(tag);
+            if (si === -1) continue;
+            hasSections = true;
+            let ei = text.length;
+            for (let j = i + 1; j < defs.length; j++) {
+                const ni = text.indexOf(`[${defs[j].key}]`);
+                if (ni !== -1) { ei = ni; break; }
+            }
+            const content = text.substring(si + tag.length, ei).trim();
+            html += `<div class="card mb-3" style="border-left:4px solid ${bg}">
+                <div class="card-header" style="background:${bg};color:#fff;font-weight:600;">${escapeHtml(key)}</div>
+                <div class="card-body" style="white-space:pre-wrap;font-size:.92rem;">${escapeHtml(content)}</div>
+            </div>`;
+        }
+        if (!hasSections) html = `<div style="white-space:pre-wrap;font-size:.92rem;">${escapeHtml(text)}</div>`;
+        return html;
+    }
+
+    // Рендер подробного анализа по гарнизонам
+    function renderGarrisonSections(text) {
+        const regex = /\[ГАРНИЗОН:\s*([^\]]+)\]/g;
+        const matches = [];
+        let m;
+        while ((m = regex.exec(text)) !== null) matches.push({ name: m[1].trim(), pos: m.index, end: m.index + m[0].length });
+        if (!matches.length) return `<div style="white-space:pre-wrap;font-size:.92rem;">${escapeHtml(text)}</div>`;
+        let html = '';
+        matches.forEach((match, i) => {
+            const contentEnd = i + 1 < matches.length ? matches[i + 1].pos : text.length;
+            const content = text.substring(match.end, contentEnd).trim();
+            html += `<div class="card mb-2">
+                <div class="card-header" style="background:#1e3d6e;color:#fff;font-weight:600;">${escapeHtml(match.name)}</div>
+                <div class="card-body" style="white-space:pre-wrap;font-size:.92rem;">${escapeHtml(content)}</div>
+            </div>`;
+        });
+        return html;
+    }
+
+    // Итоговый рендер (один гарнизон)
+    function renderAiAnalysis(data) {
+        return statsHeader(data.stats || {}) + renderSections(data.analysis || '');
+    }
+
     </script>
+
+<!-- AI Analysis Modal -->
+<style>#aiModal .card,#aiModal .card:hover,#aiModal .card:active{transform:none!important;transition:none!important;border-color:transparent!important;box-shadow:none!important;}</style>
+<div class="modal" id="aiModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#1a2c42;color:#d0d8e4;">
+                <h5 class="modal-title" style="font-weight:600;letter-spacing:.3px;">Анализ ИИ — криминогенная обстановка</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="background:#f0f2f5;">
+                <div id="ai-loading" class="text-center py-5">
+                    <div class="spinner-border" style="width:2.5rem;height:2.5rem;color:#1a2c42;"></div>
+                    <p class="mt-3" style="color:#4a5568;">Анализирую данные, подождите...</p>
+                </div>
+                <div id="ai-content" class="d-none"></div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
