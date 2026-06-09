@@ -19,6 +19,9 @@ function loadJson(string $file): array {
     if (!file_exists($path)) return [];
     $content = file_get_contents($path);
     if (!$content) return [];
+    if (strncmp($content, "\xEF\xBB\xBF", 3) === 0) {
+        $content = substr($content, 3);
+    }
     $data = json_decode($content, true);
     return is_array($data) ? $data : [];
 }

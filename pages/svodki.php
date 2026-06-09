@@ -1088,7 +1088,19 @@ async function loadIncidentCards(startDate, endDate) {
                 let monthYear = $(this).closest('.drp-calendar').find('.month').text().trim();
                 let formattedDate = convertToFullDate(dateText, monthYear);
                 if (!$(this).hasClass('off') && isValidDateInCurrentMonth(formattedDate, monthYear)) {
-                    let markedDate = markedDates.find(d => d.date === formattedDate);
+                    let markedDate = markedDates.find(d => {
+                        if (d.date) {
+                            return d.date === formattedDate;
+                        }
+                        const start = moment(d.start, "YYYY-MM-DD");
+                        const end = moment(d.end, "YYYY-MM-DD");
+                        const current = moment(formattedDate, "YYYY-MM-DD");
+                        return current.isValid()
+                            && start.isValid()
+                            && end.isValid()
+                            && current.isSameOrAfter(start, 'day')
+                            && current.isSameOrBefore(end, 'day');
+                    });
                     if (markedDate && !highlightedDates.includes(formattedDate)) {
                         $(this).css('color', '#000').append(`<span class="calendar-underline" style="position: absolute; bottom: 2px; left: 50%; width: 50%; height: 2px; background-color: ${markedDate.color}; transform: translateX(-50%);"></span>`);
                         highlightedDates.push(formattedDate);

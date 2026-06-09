@@ -432,27 +432,27 @@ $default_selections   = ['1','2'];
             <div class="card" data-card-id="road_safety">
                 <div class="title">БЕЗОПАСНОСТЬ ДОРОЖНОГО ДВИЖЕНИЯ</div>
                 <div class="line"></div>
-                <div class="details"><span>ДТП</span><span style="color:red;">0</span></div>
+                <div class="details"><span>ДТП</span><span style="color:red;">5</span></div>
                 <div class="details"><span>ПОГИБЛО</span><span style="color:red;">0</span></div>
-                <div class="details"><span>РАНЕНО</span><span style="color:red;">0</span></div>
+                <div class="details"><span>РАНЕНО</span><span style="color:red;">7</span></div>
             </div>
         </div>
         <div class="card-wrapper">
             <div class="card" data-card-id="public_interaction" data-link="pages/krim.php">
                 <div class="title">ВЗАИМОДЕЙСТВИЕ С ОБЩЕСТВОМ И ГРАЖДАНАМИ</div>
                 <div class="line"></div>
-                <div class="details"><span>РЕЙТИНГ ДОВЕРИЯ</span><span style="color:red;">0</span></div>
-                <div class="details"><span>КОЛ-ВО ПОЗИТИВНЫХ ОТЗЫВОВ</span><span style="color:red;">0</span></div>
-                <div class="details"><span>СТЕПЕНЬ УДОВЛЕТВОРЕНИЯ</span><span style="color:red;">0</span></div>
+                <div class="details"><span>РЕЙТИНГ ДОВЕРИЯ</span><span style="color:red;">70%</span></div>
+                <div class="details"><span>КОЛ-ВО ПОЗИТИВНЫХ ОТЗЫВОВ</span><span style="color:red;">20</span></div>
+                <div class="details"><span>СТЕПЕНЬ УДОВЛЕТВОРЕНИЯ</span><span style="color:red;">91%</span></div>
             </div>
         </div>
         <div class="card-wrapper">
             <div class="card" data-card-id="coordination">
                 <div class="title">КООРДИНАЦИЯ И ВЗАИМОДЕЙСТВ., ГОС. СТРОИТЕЛЬСТВО</div>
                 <div class="line"></div>
-                <div class="details"><span>СОВМЕСТНЫХ СОГЛАШЕНИЙ</span><span style="color:red;">0</span></div>
-                <div class="details"><span>ИЗМЕНЕНИЙ В ЗАКОНОДАТЕЛЬСТВО</span><span style="color:red;">0</span></div>
-                <div class="details"><span>УЧАСТИЕ В ГОС. ПРОЕКТАХ</span><span style="color:red;">0</span></div>
+                <div class="details"><span>СОВМЕСТНЫХ СОГЛАШЕНИЙ</span><span style="color:red;">17</span></div>
+                <div class="details"><span>ИЗМЕНЕНИЙ В ЗАКОНОДАТЕЛЬСТВО</span><span style="color:red;">10</span></div>
+                <div class="details"><span>УЧАСТИЕ В ГОС. ПРОЕКТАХ</span><span style="color:red;">8</span></div>
             </div>
         </div>
     </div>

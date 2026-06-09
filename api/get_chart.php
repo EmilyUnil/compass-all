@@ -53,7 +53,7 @@ $filtered = array_filter($allRecords, function ($rec) use ($startDate, $endDate,
     $recStart = $rec['data_start'] ?? '';
     $recEnd   = $rec['data_end']   ?? '';
 
-    if (!($recStart >= $startDate && $recEnd <= $endDate)) return false;
+    if (!($recStart <= $endDate && $recEnd >= $startDate)) return false;
 
     if ($garnizon === '88') {
         if (!in_array($recGar, $mvdGarnizons)) return false;

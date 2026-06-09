@@ -224,14 +224,6 @@ $endDate    = filter_input(INPUT_GET, 'end', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
                             <li><a class="dropdown-item" href="javascript:void(0);" data-index="13">Дубоссары</a></li>
                             <li><a class="dropdown-item" href="javascript:void(0);" data-index="29">Рыбница</a></li>
                             <li><a class="dropdown-item" href="javascript:void(0);" data-index="17">Каменка</a></li>
-                        <?php } else { ?>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="6">Тирасполь</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="5">Бендеры</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="31">Слободзея</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="10">Григориополь</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="13">Дубоссары</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="29">Рыбница</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" data-index="17">Каменка</a></li>
                         
                     </ul>
                 
