@@ -1,0 +1,9 @@
+{
+    debug
+}
+
+:{$PORT} {
+    root * .
+    php_server
+    file_server
+}
