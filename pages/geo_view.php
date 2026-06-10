@@ -96,15 +96,17 @@ $initialGarnisonText = strtoupper($garnizonNames[$garnizon] ?? 'ГАРНИЗОН
         .geo-popup h6 { font-size: 13px; font-weight: 700; margin-bottom: 6px;
                         color: #1a2c42; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
         .geo-popup .inc-item { margin-bottom: 5px; padding: 4px 6px;
-                               background: #f0f4f8; border-radius: 4px; }
+                               background: #f0f4f8; border-radius: 4px;
+                               cursor: pointer; transition: filter 0.15s; }
+        .geo-popup .inc-item:hover { filter: brightness(0.95); }
         .geo-popup .inc-item strong { font-size: 12px; color: #4682B4; display: block; }
         .geo-popup .inc-item.inc-important strong { color: #c0392b; }
         .geo-popup .inc-item.inc-important { background: #fff0ee;
                                              border-left: 3px solid #c0392b; }
         .geo-popup .inc-item span { font-size: 11px; color: #555; }
         .geo-popup .inc-link { font-size: 11px; color: #4682B4; text-decoration: none;
-                               float: right; margin-top: 2px; }
-        .geo-popup .inc-link:hover { text-decoration: underline; }
+                               float: right; margin-top: 2px; pointer-events: none; }
+        .geo-popup .inc-item:hover .inc-link { text-decoration: underline; }
         /* ── Legend ── */
         .map-legend { position: absolute; bottom: 30px; right: 10px; z-index: 1000;
                       background: rgba(255,255,255,0.92); border-radius: 8px;
@@ -420,10 +422,10 @@ function buildGroupPopup(group) {
     sorted.forEach(function(inc) {
         const dateDisp = inc.date ? moment(inc.date, 'YYYY-MM-DD').format('DD.MM.YYYY') : '';
         const cls = inc.is_important ? ' inc-important' : '';
-        html += `<div class="inc-item${cls}">
+        html += `<div class="inc-item${cls}" onclick="showIncidentModal(${inc.id})">
             <strong>${escapeHtml(inc.type)}</strong>
             <span>КУЗП ${inc.numb} &bull; ${dateDisp}</span>
-            <a class="inc-link" href="javascript:void(0);" onclick="showIncidentModal(${inc.id})">Подробнее →</a>
+            <a class="inc-link" href="javascript:void(0);">Подробнее →</a>
         </div>`;
     });
     html += '</div>';

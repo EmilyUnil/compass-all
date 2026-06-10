@@ -173,6 +173,42 @@ function incidentsBlock(array $incidents, string $g, bool $mvd, string $s, strin
     return $out;
 }
 
+// Geographical hotspots block from incidents.json
+// For both MVD and individual garrison: groups by specific address (not garrison),
+// requires 2+ incidents at the same address to qualify as a hotspot.
+function geoHotspotsBlock(array $incidents, string $g, bool $mvd, string $s, string $e): string {
+    $minCount = 2;
+    $limitMvd = 10;
+    $limitGar = 5;
+
+    $byAddr = [];
+    foreach ($incidents as $row) {
+        $date = $row['data_proicsh'] ?? '';
+        if ($date < $s || $date > $e) continue;
+        $gId = $row['garnizon'] ?? '';
+        if ($gId === '93') continue;
+        if (!$mvd && $gId !== $g) continue;
+        $addr = trim($row['address'] ?? '');
+        if ($addr === '') continue;
+        $byAddr[$addr] = ($byAddr[$addr] ?? 0) + 1;
+    }
+
+    $hotspots = array_filter($byAddr, fn($c) => $c >= $minCount);
+    if (empty($hotspots)) return '';
+
+    arsort($hotspots);
+    $limit = $mvd ? $limitMvd : $limitGar;
+    $top   = array_slice($hotspots, 0, $limit, true);
+
+    $out = "ГОРЯЧИЕ ТОЧКИ (адреса с 2+ происшествиями за период):\n";
+    $rank = 1;
+    foreach ($top as $addr => $cnt) {
+        $out .= "  {$rank}. {$addr}: {$cnt} " . ($cnt === 1 ? 'происшествие' : ($cnt < 5 ? 'происшествия' : 'происшествий')) . "\n";
+        $rank++;
+    }
+    return $out;
+}
+
 // Common prompt footer format
 $sectionFmt = <<<FMT
 
@@ -186,8 +222,15 @@ $sectionFmt = <<<FMT
 - Угроза 2
 - Угроза 3
 
+[ОПАСНЫЕ РАЙОНЫ]
+Только если в данных есть адреса с 2+ происшествиями. Указывать конкретные улицы/дома, не целые гарнизоны.
+- Адрес 1: N происшествий — рекомендуется усиление патрулирования
+- Адрес 2: N происшествий
+- Адрес 3: N происшествий
+Если горячих точек нет — написать только: "нет конкретных точек".
+
 [РЕКОМЕНДАЦИИ]
-- Мера 1
+- Мера 1 (включая перераспределение патруля если есть опасные районы)
 - Мера 2
 - Мера 3
 - Мера 4
@@ -215,12 +258,15 @@ if ($isMvd) {
     $overall   = aggregateRows($tableData, $source, '', true, $startDate, $endDate);
     $incAll    = ($source === 'selector') ? '' : incidentsBlock($incidents, '', true, $startDate, $endDate);
 
+    $geoAll = geoHotspotsBlock($incidents, '', true, $startDate, $endDate);
+
     $briefPrompt = promptHeader($sourceLabel, 'Республика ПМР (все гарнизоны)', $startFmt, $endFmt)
         . "СВОДНАЯ СТАТИСТИКА ПО РЕСПУБЛИКЕ:\n"
         . statsText($overall['agg'], $fieldNames, $source)
         . "\nДИНАМИКА ПО МЕСЯЦАМ:\n"
         . trendText($overall['trend'])
         . ($incAll ? "\n" . $incAll : '')
+        . ($geoAll ? "\n" . $geoAll : '')
         . $sectionFmt;
 
     // Detailed: per garrison
@@ -230,9 +276,11 @@ if ($isMvd) {
         $gData = aggregateRows($tableData, $source, $gId, false, $startDate, $endDate);
         if (empty($gData['agg'])) continue;
         $gInc  = ($source === 'selector') ? '' : incidentsBlock($incidents, $gId, false, $startDate, $endDate);
+        $gGeo  = geoHotspotsBlock($incidents, $gId, false, $startDate, $endDate);
         $garrisonBlock .= "\n=== {$gName} ===\n"
             . statsText($gData['agg'], $fieldNames, $source)
-            . ($gInc ? $gInc : '');
+            . ($gInc ? $gInc : '')
+            . ($gGeo ? $gGeo : '');
     }
 
     $detailPrompt = "Ты аналитик правоохранительных органов ПМР. "
@@ -243,7 +291,8 @@ if ($isMvd) {
         . "[ГАРНИЗОН: Название]\n"
         . "Ситуация: 1-2 предложения (укажи раскрываемость если есть).\n"
         . "Ключевые угрозы: конкретные виды с цифрами.\n"
-        . "Рекомендации: 2-3 меры.\n"
+        . "Опасные районы: топ-3 адреса/улицы с числом происшествий (если есть горячие точки).\n"
+        . "Рекомендации: 2-3 меры (включая усиление патруля в горячих точках).\n"
         . "Прогноз: ожидаемые показатели с трендом.\n";
 
     echo json_encode([
@@ -266,6 +315,7 @@ if ($isMvd) {
 
     $data    = aggregateRows($tableData, $source, $garnizon, false, $startDate, $endDate);
     $incText = ($source === 'selector') ? '' : incidentsBlock($incidents, $garnizon, false, $startDate, $endDate);
+    $geoText = geoHotspotsBlock($incidents, $garnizon, false, $startDate, $endDate);
 
     $prompt = promptHeader($sourceLabel, $garnizonName, $startFmt, $endFmt)
         . "СТАТИСТИКА:\n"
@@ -273,6 +323,7 @@ if ($isMvd) {
         . "\nДИНАМИКА ПО МЕСЯЦАМ:\n"
         . trendText($data['trend'])
         . ($incText ? "\n" . $incText : '')
+        . ($geoText ? "\n" . $geoText : '')
         . $sectionFmt;
 
     echo json_encode([
