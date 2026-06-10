@@ -17,8 +17,8 @@
     box-sizing: border-box;
 }
 
-.date-selector #ai-button, .date-selector #geo-button {
-    width: 85px;
+.date-selector #ai-button {
+    width: 180px;
     font-size: 18px;
 }
 

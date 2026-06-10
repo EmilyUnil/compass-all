@@ -77,6 +77,18 @@ margin-bottom: 0px;
             font-weight: bold;
             line-height: 1;
         }
+        /* ИИ + ГЕО пара — суммарно 180px как кнопка ГРАФИК */
+        .btn-pair-svodki {
+            display: flex;
+            gap: 6px;
+            width: 180px;
+            flex-shrink: 0;
+        }
+        .btn-pair-svodki .btn {
+            width: auto !important;
+            flex: 1;
+            font-size: 16px;
+        }
         #type_proicsh_menu .dropdown-item {
             white-space: normal;
             word-wrap: break-word;
@@ -202,7 +214,10 @@ background-color: #fff;
             </div>
             <input type="text" id="date-range" class="form-control" placeholder="Выберите период">
             <button id="show-button" class="btn btn-primary">ГРАФИК</button>
-            <button id="ai-button" class="btn btn-primary">ИИ</button>
+            <div class="btn-pair-svodki">
+                <button id="ai-button" class="btn btn-primary">ИИ</button>
+                <button id="geo-button" class="btn btn-primary">ГЕО</button>
+            </div>
         </div>
         <div class="table-container">
             <div class="table-column" id="pole2-table">
@@ -454,6 +469,14 @@ $('#back-button').on('click', function() {
             $('#ai-content').removeClass('d-none').html(`<div class="alert alert-danger"><strong>Ошибка:</strong> ${errMsg}</div>`);
         }
         logAction('Нажатие кнопки ИИ');
+    });
+    $('#geo-button').on('click', function() {
+        const picker   = $('#date-range').data('daterangepicker');
+        const startDate = picker.startDate.format('DD.MM.YYYY');
+        const endDate   = picker.endDate.format('DD.MM.YYYY');
+        const garnizon  = selectedGarnisonIndex;
+        window.location.href = `geo_view.php?garnizon=${garnizon}&start=${startDate}&end=${endDate}`;
+        logAction(`Переход к ГЕО для гарнизона ${$('#garnizon-dropdown').text()} за ${startDate} - ${endDate}`);
     });
     $('#additional-cancel-button').on('click', function() {
         $('#number-input').val('').removeData('id_zapisi');

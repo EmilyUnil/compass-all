@@ -533,7 +533,6 @@ $initialSubMode = '';
             <input type="text" id="date-range" class="form-control" value="<?php echo htmlspecialchars($startDate . ' по ' . $endDate); ?>">
             <button id="show-button" class="btn btn-primary">ГРАФИК</button>
             <button id="ai-button" class="btn btn-primary">ИИ</button>
-            <button id="geo-button" class="btn btn-primary">ГЕО</button>
         </div>
         <div id="readonly-banner"></div>
         <div class="table-container">

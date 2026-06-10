@@ -107,6 +107,7 @@ $initialGarnisonText = strtoupper($garnizonNames[$garnizon] ?? 'ГАРНИЗОН
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            text-transform: uppercase;
         }
         .date-selector #back-button:hover,
         .date-selector button:hover,
@@ -128,7 +129,11 @@ $initialGarnisonText = strtoupper($garnizonNames[$garnizon] ?? 'ГАРНИЗОН
             line-height: 1.5;
             vertical-align: middle;
         }
+        .dropdown-toggle::after { display: none !important; }
         .dropdown-menu.show { width: 180px; }
+        /* ИИ+ГЕО пара: суммарно 180px как один обычный btn */
+        .btn-pair-chart { display: flex; gap: 6px; width: 180px; flex-shrink: 0; }
+        .btn-pair-chart button { width: auto !important; flex: 1; font-size: 16px; }
         /* ── Content ── */
         .content {
             display: flex;
@@ -225,8 +230,12 @@ $initialGarnisonText = strtoupper($garnizonNames[$garnizon] ?? 'ГАРНИЗОН
         </div>
         <input type="text" id="date-range" class="centered-input"
                value="<?php echo htmlspecialchars($startDate . ' по ' . $endDate); ?>">
-        <button id="ai-button">ИИ</button>
-        <button id="geo-button">ГЕО</button>
+        <div class="btn-pair-chart">
+            <button id="ai-button">ИИ</button>
+            <?php if ($chartMode === 'svodki'): ?>
+            <button id="geo-button">ГЕО</button>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="content">
         <div class="chart-container">
@@ -591,8 +600,13 @@ $(function () {
         else markDatesInCalendar();
     });
 
-    // ГЕО
-    $('#geo-button').on('click', () => alert('Функционал ГЕО в разработке.'));
+    // ГЕО (только svodki-режим)
+    $('#geo-button').on('click', function () {
+        const picker = $('#date-range').data('daterangepicker');
+        const start  = picker.startDate.format('DD.MM.YYYY');
+        const end    = picker.endDate.format('DD.MM.YYYY');
+        window.location.href = `geo_view.php?garnizon=${selectedGarnizon}&start=${start}&end=${end}`;
+    });
 
     // ИИ
     $('#ai-button').on('click', async function () {
